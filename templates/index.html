@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Translator</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h1, h3 {
+            text-align: center;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        textarea, select {
+            background-color: #202020;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 60%; /* Adjust the width */
+            margin: 0 auto; /* Center the element */
+        }
+
+        button {
+            background-color: #FFA500; /* Orange color */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: #FF8C00; /* Slightly darker orange on hover */
+        }
+        
+
+        #original-text, #translated-text {
+            white-space: pre-line;
+        }
+
+        footer {
+            text-align: center;
+            background-color: #333;
+            padding: 10px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Language Translator</h1>
+    
+    <div class="container">
+        <textarea id="input-text" rows="10" style="resize: none;"></textarea>
+        <br>
+        <select id="language-select" style="width: 60%; margin: 0 auto;"> <!-- Adjust the width and center the element -->
+            <option value="en">English</option>
+            <option value="es">Spanish</option>
+            <option value="af">Afrikaans</option>
+            <option value="sq">Albanian</option>
+            <option value="am">Amharic</option>
+            <option value="ar">Arabic</option>
+            <option value="hy">Armenian</option>
+            <option value="az">Azerbaijani</option>
+            <option value="eu">Basque</option>
+            <option value="be">Belarusian</option>
+            <option value="bn">Bengali</option>
+            <option value="bs">Bosnian</option>
+            <option value="bg">Bulgarian</option>
+            <option value="ca">Catalan</option>
+            <option value="ceb">Cebuano</option>
+            <option value="ny">Chichewa</option>
+            <option value="co">Corsican</option>
+            <option value="hr">Croatian</option>
+            <option value="cs">Czech</option>
+            <option value="da">Danish</option>
+            <option value="nl">Dutch</option>
+            <option value="eo">Esperanto</option>
+            <option value="et">Estonian</option>
+            <option value="tl">Filipino</option>
+            <option value="fi">Finnish</option>
+            <option value="fr">French</option>
+            <option value="fy">Frisian</option>
+            <option value="gl">Galician</option>
+            <option value="ka">Georgian</option>
+            <option value="de">German</option>
+            <!-- Add more language options as needed -->
+        </select>
+        <br>
+        <button id="translate-button" onclick="translateText()">Translate</button>
+        <br>
+        <h3>Original Text</h3>
+        <p id="original-text"></p>
+        <h3>Translated Text</h3>
+        <p id="translated-text"></p>
+    </div>
+
+    <footer>
+        Project by Akshita Adhikari
+    </footer>
+
+    <script>
+        function translateText() {
+            var inputText = document.getElementById('input-text').value;
+            var selectedLanguage = document.getElementById('language-select').value;
+
+            fetch('/translate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    text: inputText,
+                    language: selectedLanguage
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('original-text').textContent = inputText;
+                document.getElementById('translated-text').textContent = data.translated_text;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
